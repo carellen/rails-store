@@ -1,0 +1,19 @@
+%table.table
+  %thead
+    %tr
+      %th
+        ID
+      %th
+        Date
+      %th
+        Supplier
+  %tbody
+    - @receipt_notes.each do |note|
+      %tr
+        %td
+          = note.id
+        %td
+          = note.date
+        %td
+          = note.supplier
+= link_to 'New receipt note', new_receipt_note_path

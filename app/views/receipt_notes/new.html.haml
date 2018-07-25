@@ -1,0 +1,10 @@
+= simple_form_for @receipt_note do |f|
+  = f.input :date
+  = f.input :supplier
+  = f.simple_fields_for :incomes, dynamic: true do |i|
+    = i.association :item
+    = i.input :quantity
+    = i.input :price
+    = i.remove_fields_link 'Remove income'
+  = f.add_fields_link :incomes, 'Add income'
+  = f.button :submit

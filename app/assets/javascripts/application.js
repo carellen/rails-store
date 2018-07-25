@@ -16,4 +16,5 @@
 //= require jquery3
 //= require popper
 //= require bootstrap
+//= require dynamic-fields-for
 //= require_tree .

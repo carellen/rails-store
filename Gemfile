@@ -27,6 +27,7 @@ gem 'haml-rails'
 gem 'bootstrap'
 gem 'jquery-rails'
 gem 'simple_form'
+gem 'dynamic-fields-for'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
