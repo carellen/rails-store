@@ -1,0 +1,19 @@
+%table.table
+  %thead
+    %tr
+      %th
+        ID
+      %th
+        Date
+      %th
+        Customer
+  %tbody
+    - @delivery_notes.each do |note|
+      %tr
+        %td
+          = note.id
+        %td
+          = note.date
+        %td
+          = note.customer
+= link_to 'New delivery note', new_delivery_note_path

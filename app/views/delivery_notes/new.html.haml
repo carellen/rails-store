@@ -1,0 +1,10 @@
+= simple_form_for @delivery_note do |f|
+  = f.input :date
+  = f.input :customer
+  = f.simple_fields_for :outcomes, dynamic: true do |i|
+    = i.association :item
+    = i.input :quantity
+    = i.input :price
+    = i.remove_fields_link 'Remove outcome'
+  = f.add_fields_link :outcomes, 'Add outcome'
+  = f.button :submit
