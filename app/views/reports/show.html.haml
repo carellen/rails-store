@@ -1,0 +1,25 @@
+%table.table
+  %thead
+    %tr
+      %th
+        Item
+      %th
+        Date in
+      %th
+        Price
+      %th
+        Quantity
+  %tbody
+    - @report.each do |item|
+      %tr
+        %td
+          = item.name
+        %td
+          = item.date
+        %td
+          = item.price
+        %td
+          = item.quantity
+= link_to 'Show', report_path
+|
+= link_to 'Back', root_path
