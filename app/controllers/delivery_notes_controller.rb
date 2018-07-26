@@ -17,6 +17,11 @@ class DeliveryNotesController < ApplicationController
     end
   end
 
+  def show
+    @delivery_note = DeliveryNote.find(params[:id])
+    @outcomes = @delivery_note.outcomes
+  end
+
   private
 
     def delivery_note_params

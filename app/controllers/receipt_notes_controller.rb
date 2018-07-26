@@ -17,6 +17,11 @@ class ReceiptNotesController < ApplicationController
     end
   end
 
+  def show
+    @receipt_note = ReceiptNote.find(params[:id])
+    @incomes = @receipt_note.incomes
+  end
+
   private
 
     def receipt_note_params

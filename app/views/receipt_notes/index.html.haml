@@ -7,6 +7,8 @@
         Date
       %th
         Supplier
+      %th
+        actions
   %tbody
     - @receipt_notes.each do |note|
       %tr
@@ -16,6 +18,8 @@
           = note.date
         %td
           = note.supplier
+        %td
+          = button_to 'Show', receipt_note_path(note), method: :get
 = link_to 'New receipt note', new_receipt_note_path
 |
 = link_to 'Back', root_path

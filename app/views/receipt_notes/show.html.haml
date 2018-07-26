@@ -1,0 +1,10 @@
+%table.table
+  %tbody
+    %tr
+      %td Date: #{@receipt_note.date}
+    %tr
+      %td Supplier: #{@receipt_note.supplier}
+    - @incomes.each do |income|
+      %tr
+        %td Item: #{income.item_name} | Qty: #{income.quantity} | Price: #{income.price}
+= link_to 'Back', receipt_notes_path

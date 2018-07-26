@@ -1,0 +1,10 @@
+%table.table
+  %tbody
+    %tr
+      %td Date: #{@delivery_note.date}
+    %tr
+      %td Customer: #{@delivery_note.customer}
+    - @outcomes.each do |outcome|
+      %tr
+        %td Item: #{outcome.item_name} | Qty: #{outcome.quantity} | Price: #{outcome.price}
+= link_to 'Back', delivery_notes_path
