@@ -11,7 +11,7 @@ class ReceiptNotesController < ApplicationController
   def create
     @receipt_note = ReceiptNote.new(receipt_note_params)
     if @receipt_note.save
-      redirect_to receipt_notes_path
+      redirect_back fallback_location: root_path
     else
       render new_receipt_note_path
     end

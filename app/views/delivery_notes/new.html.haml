@@ -1,10 +1,21 @@
 = simple_form_for @delivery_note do |f|
   = f.input :date
   = f.input :customer
-  = f.simple_fields_for :outcomes, dynamic: true do |i|
-    = i.association :item
-    = i.input :quantity
-    = i.input :price
-    = i.remove_fields_link 'Remove outcome'
-  = f.add_fields_link :outcomes, 'Add outcome'
-  = f.button :submit
+  .row
+    = f.simple_fields_for :outcomes, dynamic: true do |i|
+      .col-6
+        = i.association :item, collection: Item.where(name: @items),
+          label: false, include_blank: '-- select item --'
+      .col-2
+        = i.input :quantity, label: false, placeholder: 'Qty'
+      .col-sm
+        = i.input :price, label: false, placeholder: 'Price'
+      .col-sm
+        = i.remove_fields_link 'Remove item', class: 'btn btn-info'
+  .row
+    .col-sm
+      = f.add_fields_link :outcomes, '+ Add item', class: 'btn btn-success btn-sm'
+  .row.justify-content-center
+    .col-md-auto
+      = f.button :submit
+  = link_to 'Back', delivery_notes_path

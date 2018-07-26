@@ -1,10 +1,20 @@
 = simple_form_for @receipt_note do |f|
   = f.input :date
   = f.input :supplier
-  = f.simple_fields_for :incomes, dynamic: true do |i|
-    = i.association :item
-    = i.input :quantity
-    = i.input :price
-    = i.remove_fields_link 'Remove income'
-  = f.add_fields_link :incomes, 'Add income'
-  = f.button :submit
+  .row.align-items-center
+    = f.simple_fields_for :incomes, dynamic: true do |i|
+      .col-6
+        = i.association :item
+      .col-1
+        = i.input :quantity
+      .col-sm
+        = i.input :price
+      .col-sm
+        = i.remove_fields_link 'Remove item', class: 'btn btn-danger'
+  = f.add_fields_link :incomes, '+', class: 'btn btn-success'
+  .row.justify-content-end
+    .col-4
+      = link_to '+ Add new item', new_item_path, class: 'btn btn-info'
+    .col-4
+      = f.button :submit
+  = link_to 'Back', receipt_notes_path
