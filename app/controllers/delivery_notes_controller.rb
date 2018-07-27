@@ -1,5 +1,6 @@
 class DeliveryNotesController < ApplicationController
   include Report
+  before_action :available_items, only: [:new, :create]
 
   def index
     @delivery_notes = DeliveryNote.all
@@ -8,7 +9,6 @@ class DeliveryNotesController < ApplicationController
   def new
     @delivery_note = DeliveryNote.new
     @delivery_note.outcomes.build
-    @items = available_items
   end
 
   def create
@@ -33,6 +33,6 @@ class DeliveryNotesController < ApplicationController
     end
 
     def available_items
-      Report.calculate_for(DateTime.now).select {|i| i.quantity > 0 }.map { |item| item.name }.uniq
+      @items = Report.available_items.keys
     end
 end
