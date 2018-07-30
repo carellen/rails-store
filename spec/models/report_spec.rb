@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Report do
+RSpec.describe ReportService do
   let(:date_1) { DateTime.now - 2.hour }
   let(:date_2) { DateTime.now - 1.hour }
   let(:date_3) { DateTime.now - 30.minute }
@@ -22,7 +22,7 @@ RSpec.describe Report do
     items = described_class.calculate_for(DateTime.now)
     items_quantity = items.map { |item| [item.name, item.quantity] }
     expect(items_quantity). to eq(
-      [["First item", 0], ["First item", 2], ["Second item", 1], ["Third item", 0]]
+      [["First item", 2], ["Second item", 1]]
     )
   end
 
@@ -30,7 +30,7 @@ RSpec.describe Report do
     items = described_class.calculate_for(DateTime.now)
     items_dates = items.map { |item| [item.quantity, item.date] }
     expect(items_dates). to eq(
-      [[0, date_1], [2, date_2], [1, date_1], [0, date_1]]
+      [[2, date_2], [1, date_1]]
     )
   end
 end

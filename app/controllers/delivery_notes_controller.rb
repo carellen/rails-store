@@ -1,5 +1,5 @@
 class DeliveryNotesController < ApplicationController
-  include Report
+  include ReportService
   before_action :available_items, only: [:new, :create]
 
   def index
@@ -33,6 +33,6 @@ class DeliveryNotesController < ApplicationController
     end
 
     def available_items
-      @items = Report.available_items.keys
+      @items = ReportService.available_items.keys
     end
 end

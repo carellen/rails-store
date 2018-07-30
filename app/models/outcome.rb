@@ -1,5 +1,5 @@
 class Outcome < ApplicationRecord
-  include Report
+  include ReportService
   belongs_to :item
   belongs_to :delivery_note
 
@@ -13,6 +13,6 @@ class Outcome < ApplicationRecord
   private
 
     def avialble_quantity
-      Report.available_quantity_for(item_id)
+      ReportService.available_quantity_for(item_id)
     end
 end
