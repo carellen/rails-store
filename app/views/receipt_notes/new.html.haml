@@ -1,5 +1,5 @@
 = simple_form_for @receipt_note do |f|
-  = f.input :date
+  = f.input :date, default: DateTime.now
   = f.input :supplier
   .row.align-items-center
     = f.simple_fields_for :incomes, dynamic: true do |i|

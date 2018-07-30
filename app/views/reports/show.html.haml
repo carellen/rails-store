@@ -1,25 +1,28 @@
-%table.table
-  %thead
-    %tr
-      %th
-        Item
-      %th
-        Date in
-      %th
-        Price
-      %th
-        Quantity
-  %tbody
-    - @report.each do |item|
+.row
+  = simple_form_for @report, as: :report, method: :get, url: report_path do |f|
+    = f.input :date, as: :datetime
+    = f.submit 'Submit', class: 'btn btn-success btn-block'
+.row
+  %table.table
+    %thead
       %tr
-        %td
-          = item.name
-        %td
-          = item.date
-        %td
-          = item.price
-        %td
-          = item.quantity
-= link_to 'Show', report_path
-|
+        %th
+          Item
+        %th
+          Date in
+        %th
+          Price
+        %th
+          Quantity
+    %tbody
+      - @report.data.each do |item|
+        %tr
+          %td
+            = item.name
+          %td
+            = item.date
+          %td
+            = item.price
+          %td
+            = item.quantity
 = link_to 'Back', root_path
