@@ -1,4 +1,5 @@
 class ReceiptNotesController < ApplicationController
+
   def index
     @receipt_notes = ReceiptNote.all
   end
@@ -20,6 +21,11 @@ class ReceiptNotesController < ApplicationController
   def show
     @receipt_note = ReceiptNote.find(params[:id])
     @incomes = @receipt_note.incomes
+  end
+
+  def posting
+    DocumentService.new(ReceiptNote.find(params[:id])).posting
+    redirect_back fallback_location: receipt_notes_path
   end
 
   private

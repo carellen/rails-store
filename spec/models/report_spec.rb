@@ -18,19 +18,17 @@ RSpec.describe ReportService do
   let!(:outcome_2) { Outcome.create!(item: item_2, quantity: 1, price: 25.0, delivery_note: delivery_note)}
   let!(:outcome_3) { Outcome.create!(item: item_3, quantity: 3, price: 28.0, delivery_note: delivery_note)}
 
-  it 'should calculate correct rest of items' do
-    items = described_class.calculate_for(DateTime.now)
-    items_quantity = items.map { |item| [item.name, item.quantity] }
-    expect(items_quantity). to eq(
-      [["First item", 2], ["Second item", 1]]
-    )
+  before do
+    [receipt_note, receipt_note_2, delivery_note].each do |i|
+        DocumentService.new(i).posting
+    end
   end
 
-  it 'should remove items as FIFO' do
-    items = described_class.calculate_for(DateTime.now)
-    items_dates = items.map { |item| [item.quantity, item.date] }
-    expect(items_dates). to eq(
-      [[2, date_2], [1, date_1]]
-    )
+  it 'should calculate correct rest of items' do
+    items = described_class.calculate_for.map(&:to_a)
+    expect(items). to eq([
+      [item_1.id, date_2.utc.strftime("%Y-%m-%d %T.%6L"), "12.0", 2],
+      [item_2.id, date_1.utc.strftime("%Y-%m-%d %T.%6L"), "15.0", 1]
+     ])
   end
 end

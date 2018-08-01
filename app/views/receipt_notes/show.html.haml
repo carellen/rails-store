@@ -7,4 +7,7 @@
     - @incomes.each do |income|
       %tr
         %td Item: #{income.item_name} | Qty: #{income.quantity} | Price: #{income.price}
+
+= button_to 'Posting', posting_receipt_note_path(@receipt_note),
+  class: "btn #{document_button_class(@receipt_note)}"
 = link_to 'Back', receipt_notes_path

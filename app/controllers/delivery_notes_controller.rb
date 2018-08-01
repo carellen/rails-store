@@ -25,6 +25,16 @@ class DeliveryNotesController < ApplicationController
     @outcomes = @delivery_note.outcomes
   end
 
+  def posting
+    DocumentService.new(DeliveryNote.find(params[:id])).posting
+    redirect_back fallback_location: delivery_notes_path
+  end
+
+  def undo
+    DocumentService.new(DeliveryNote.find(params[:id])).delete
+    redirect_back fallback_location: delivery_notes_path
+  end
+
   private
 
     def delivery_note_params

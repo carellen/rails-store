@@ -2,46 +2,20 @@ module ReportService
   Item = Struct.new(:name, :date, :price, :quantity)
 
   class << self
-    # def calculate_for(date)
-    #
-    # end
-
-    def calculate_for(date)
-      inc = Income.joins(:receipt_note)
-        .where("receipt_notes.date <= ?", date)
-        .includes(:item, :receipt_note)
-        .group_by { |income| [income.item_name, income.in_date, income.price] }
-        .sort_by { |k,v| [k[0], k[1]] }
-      out = Outcome.joins(:delivery_note)
-        .where("delivery_notes.date <= ?", date)
-        .includes(:item, :delivery_note)
-        .group_by { |outcome| [outcome.item_name] }
-
-      out = out.inject({}) do |s, outcome|
-        s.merge({ outcome[0][0] => outcome[1].reduce(0) { |sum, o| sum += o.quantity } })
-      end
-      out.each do |k,v|
-        out = v
-        inc.each do |arr|
-          if k == arr[0][0]
-            if out > arr[1][0].quantity
-              out -= arr[1][0].quantity
-              arr[1][0].quantity = 0
-            else
-              arr[1][0].quantity -= out
-              break
-            end
-          end
-        end
-      end
-      inc.reject {|i| i[1][0].quantity <= 0}.map do |i|
-        Item.new(
-          i[0][0],
-          i[0][1],
-          i[0][2],
-          i[1].inject(0) { |s,income| s += income.quantity }
-        )
-      end.sort_by { |i| [i.name, i.date, i.price] }
+    def calculate_for(report_date = DateTime.now)
+      query = <<-SQL
+        SELECT t.*
+        FROM (SELECT item_id, date_in, price, sum(quantity) quantity
+                          FROM goods_entries
+                          WHERE date_in <= '#{report_date}'
+													AND date_out <= '#{report_date}'
+													OR date_out IS NULL
+                          GROUP BY item_id, date_in, price
+                          ORDER BY item_id, date_in) t
+        WHERE quantity > 0
+      SQL
+      items = ActiveRecord::Base.connection.execute(query)
+      items.map { |i| Item.new(i["item_id"], i["date_in"], i["price"], i["quantity"]) }
     end
 
     def available_quantity_for(item_id)

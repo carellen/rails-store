@@ -7,4 +7,7 @@
     - @outcomes.each do |outcome|
       %tr
         %td Item: #{outcome.item_name} | Qty: #{outcome.quantity} | Price: #{outcome.price}
+        
+= button_to 'Posting', posting_delivery_note_path(@delivery_note),
+  class: "btn #{document_button_class(@delivery_note)}"
 = link_to 'Back', delivery_notes_path

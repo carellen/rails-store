@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_25_140612) do
+ActiveRecord::Schema.define(version: 2018_07_30_072700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,20 @@ ActiveRecord::Schema.define(version: 2018_07_25_140612) do
     t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "goods_entries", force: :cascade do |t|
+    t.datetime "date_in"
+    t.datetime "date_out"
+    t.integer "quantity"
+    t.decimal "price"
+    t.string "document_type"
+    t.bigint "document_id"
+    t.bigint "item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["document_type", "document_id"], name: "index_goods_entries_on_document_type_and_document_id"
+    t.index ["item_id"], name: "index_goods_entries_on_item_id"
   end
 
   create_table "incomes", force: :cascade do |t|
@@ -57,6 +71,7 @@ ActiveRecord::Schema.define(version: 2018_07_25_140612) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "goods_entries", "items"
   add_foreign_key "incomes", "items"
   add_foreign_key "incomes", "receipt_notes"
   add_foreign_key "outcomes", "delivery_notes"
