@@ -2,7 +2,7 @@ module ReportService
   Item = Struct.new(:name, :date, :price, :quantity)
 
   class << self
-    def calculate_for(report_date = DateTime.now)
+    def calculate_for(report_date = Time.now)
       query = <<-SQL
         SELECT t.*
         FROM (SELECT item_id, date_in, price, sum(quantity) quantity
@@ -15,7 +15,7 @@ module ReportService
         WHERE quantity > 0
       SQL
       items = ActiveRecord::Base.connection.execute(query)
-      items.map { |i| Item.new(i["item_id"], i["date_in"], i["price"], i["quantity"]) }
+      items.map { |i| Item.new(i["item_id"], Time.zone.parse(i["date_in"]), i["cost_price"], i["quantity"]) }
     end
 
     def available_quantity_for(item_id)

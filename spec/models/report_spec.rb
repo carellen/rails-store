@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe ReportService do
-  let(:date_1) { DateTime.now - 2.hour }
-  let(:date_2) { DateTime.now - 1.hour }
-  let(:date_3) { DateTime.now - 30.minute }
+  let(:date_1) { Time.now - 2.hour }
+  let(:date_2) { Time.now - 1.hour }
+  let(:date_3) { Time.now - 30.minute }
   let!(:item_1) { Item.create!(name: 'First item')}
   let!(:item_2) { Item.create!(name: 'Second item')}
   let!(:item_3) { Item.create!(name: 'Third item')}
@@ -27,8 +27,8 @@ RSpec.describe ReportService do
   it 'should calculate correct rest of items' do
     items = described_class.calculate_for.map(&:to_a)
     expect(items). to eq([
-      [item_1.id, date_2.utc.strftime("%Y-%m-%d %T.%6L"), "12.0", 2],
-      [item_2.id, date_1.utc.strftime("%Y-%m-%d %T.%6L"), "15.0", 1]
+      [item_1.id, date_2, "12.0", 2],
+      [item_2.id, date_1, "15.0", 1]
      ])
   end
 end

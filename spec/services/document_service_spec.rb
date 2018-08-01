@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe DocumentService do
-  let(:date_1) { DateTime.now - 2.hour }
-  let(:date_2) { DateTime.now - 1.hour }
-  let(:date_3) { DateTime.now - 30.minute }
-  let(:date_4) { DateTime.now - 15.minute }
-  let(:date_5) { DateTime.now - 10.minute }
+  let(:date_1) { Time.now - 2.hour }
+  let(:date_2) { Time.now - 1.hour }
+  let(:date_3) { Time.now - 30.minute }
+  let(:date_4) { Time.now - 15.minute }
+  let(:date_5) { Time.now - 10.minute }
   let!(:item_1) { Item.create!(name: 'First item')}
   let!(:item_2) { Item.create!(name: 'Second item')}
   let!(:item_3) { Item.create!(name: 'Third item')}
