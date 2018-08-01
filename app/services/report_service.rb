@@ -1,16 +1,16 @@
 module ReportService
-  Item = Struct.new(:name, :date, :price, :quantity)
+  Item = Struct.new(:name, :date, :cost_price, :quantity)
 
   class << self
     def calculate_for(report_date = Time.now)
       query = <<-SQL
         SELECT t.*
-        FROM (SELECT item_id, date_in, price, sum(quantity) quantity
+        FROM (SELECT item_id, date_in, cost_price, sum(quantity) quantity
                           FROM goods_entries
                           WHERE date_in <= '#{report_date}'
 													AND date_out <= '#{report_date}'
 													OR date_out IS NULL
-                          GROUP BY item_id, date_in, price
+                          GROUP BY item_id, date_in, cost_price
                           ORDER BY item_id, date_in) t
         WHERE quantity > 0
       SQL

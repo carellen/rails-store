@@ -28,11 +28,13 @@ RSpec.describe DocumentService do
   end
 
   it 'should create proper goods_entries for receipt_note' do
-    entries = GoodsEntry.all.map {|e| [e.date_in, e.date_out, e.quantity, e.price, e.item_id] }
+    entries = GoodsEntry.all.map { |e|
+      [e.date_in, e.date_out,
+         e.quantity, e.cost_price, e.sale_price, e.item_id] }
 
     expect(entries).to match_array([
-      [date_1.utc, nil, 2, 10.0, item_1.id],
-      [date_2.utc, nil, 2, 12.0, item_1.id]
+      [date_1, nil, 2, 10.0, nil, item_1.id],
+      [date_2, nil, 2, 12.0, nil, item_1.id]
       ])
   end
 
@@ -52,13 +54,14 @@ RSpec.describe DocumentService do
     end
 
     entries = GoodsEntry.where(document_type: 'DeliveryNote').map { |e|
-      [e.date_in, e.date_out, e.quantity, e.price, e.item_id] }
+      [e.date_in, e.date_out,
+         e.quantity, e.cost_price, e.sale_price, e.item_id] }
 
     expect(entries).to match_array([
-      [date_1.utc, date_3.utc, -2, 10.0, item_1.id],
-      [date_2.utc, date_3.utc, -1, 12.0, item_1.id],
-      [date_2.utc, date_5.utc, -1, 12.0, item_1.id],
-      [date_4.utc, date_5.utc, -1, 14.0, item_1.id]
+      [date_1, date_3, -2, 10.0, 22.0, item_1.id],
+      [date_2, date_3, -1, 12.0, 22.0, item_1.id],
+      [date_2, date_5, -1, 12.0, 25.0, item_1.id],
+      [date_4, date_5, -1, 14.0, 25.0, item_1.id]
       ])
   end
 end

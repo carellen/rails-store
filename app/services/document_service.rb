@@ -13,15 +13,15 @@ class DocumentService
     date = @document.date.iso8601(6)
     entries = @document.table_rows.flat_map do |e|
         if @document.instance_of?(ReceiptNote)
-          "('#{date}',null,#{e.quantity},
-          #{e.price},'#{@document.class}',#{@document.id},#{e.item_id},'now()','now()')"
+          "('#{date}',null,#{e.quantity},#{e.price},null,
+          '#{@document.class}',#{@document.id},#{e.item_id},'now()','now()')"
         else
           query = <<-SQL
             SELECT t.*
-            FROM (SELECT date_in, price, sum(quantity) quantity
+            FROM (SELECT date_in, cost_price, sum(quantity) quantity
                   FROM goods_entries
                   WHERE item_id = #{e.item_id}
-                  GROUP BY date_in, price
+                  GROUP BY date_in, cost_price
                   ORDER BY date_in) t
             WHERE t.quantity > 0
           SQL
@@ -32,10 +32,12 @@ class DocumentService
             if item['quantity'] < items_q
               items_q -= item["quantity"]
               entries.push("('#{item["date_in"]}','#{date}',#{-item["quantity"]},
-              #{item["price"]},'#{@document.class}',#{@document.id},#{e.item_id},'now()','now()')")
+              #{item["cost_price"]},#{e.price},'#{@document.class}',
+              #{@document.id},#{e.item_id},'now()','now()')")
             else
               entries.push("('#{item["date_in"]}','#{date}',#{-items_q},
-              #{item["price"]},'#{@document.class}',#{@document.id},#{e.item_id},'now()','now()')")
+              #{item["cost_price"]},#{e.price},'#{@document.class}',
+              #{@document.id},#{e.item_id},'now()','now()')")
               break
             end
           end
@@ -44,7 +46,7 @@ class DocumentService
     end
     query = <<-SQL
       INSERT INTO goods_entries
-      (date_in, date_out, quantity, price, document_type, document_id, item_id, created_at, updated_at)
+      (date_in, date_out, quantity, cost_price, sale_price, document_type, document_id, item_id, created_at, updated_at)
       VALUES #{entries.join(',')}
       RETURNING id
     SQL
