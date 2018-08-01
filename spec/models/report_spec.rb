@@ -20,7 +20,7 @@ RSpec.describe ReportService do
 
   before do
     [receipt_note, receipt_note_2, delivery_note].each do |i|
-        DocumentService.new(i).posting
+        DocumentService.new(i).post
     end
   end
 

@@ -23,11 +23,6 @@ class ReceiptNotesController < ApplicationController
     @incomes = @receipt_note.incomes
   end
 
-  def posting
-    DocumentService.new(ReceiptNote.find(params[:id])).posting
-    redirect_back fallback_location: receipt_notes_path
-  end
-
   private
 
     def receipt_note_params

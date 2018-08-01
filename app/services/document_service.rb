@@ -7,7 +7,7 @@ class DocumentService
     @document.goods_entries.delete_all
   end
 
-  def posting
+  def post
     delete
     return if @document.table_rows.empty?
     date = @document.date.iso8601(6)
