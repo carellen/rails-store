@@ -13,8 +13,7 @@ class DocumentService
     date = @document.date.iso8601(6)
     entries = @document.table_rows.flat_map do |e|
         if @document.instance_of?(ReceiptNote)
-          "('#{date}',null,#{e.quantity},#{e.price},null,
-          '#{@document.class}',#{@document.id},#{e.item_id},'now()','now()')"
+          "('#{date}',null,#{e.quantity},#{e.price},null,'#{@document.class}',#{@document.id},#{e.item_id},'now()','now()')"
         else
           query = <<-SQL
             SELECT t.*

@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   concern :postable do
-    resources :document_posting, only: [:index, :create, :show, :destroy]
+    resource :document_posting, only: [:index, :create, :show, :destroy]
   end
   root 'application#index'
 

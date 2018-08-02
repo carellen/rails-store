@@ -1,14 +1,10 @@
-class DocumentPostingController < ApplicationController
+class DocumentPostingsController < ApplicationController
   before_action :find_document, except: :index
 
   DOCUMENTS = [
     ReceiptNote,
     DeliveryNote
   ].freeze
-
-  def index
-    @goods_entries = GoodsEntry.all
-  end
 
   def create
     DocumentService.new(@document).post
@@ -17,10 +13,14 @@ class DocumentPostingController < ApplicationController
 
   def show
     @goods_entries = @document.goods_entries
+    respond_to do |format|
+      format.js
+    end
   end
 
   def destroy
     DocumentService.new(@document).delete
+    redirect_back fallback_location: root_path
   end
 
   private

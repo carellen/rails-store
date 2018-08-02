@@ -1,0 +1,39 @@
+.card.card-body
+  %table.table
+    %thead
+      %tr
+        %th
+          ID
+        %th
+          Item
+        %th
+          Date_in
+        %th
+          Date_out
+        %th
+          Quantity
+        %th
+          Cost price
+        %th
+          Sale price
+        %th
+          Type
+    %tbody
+      - @goods_entries.each do |entry|
+        %tr
+          %td
+            = entry.id
+          %td
+            = entry.item_id
+          %td
+            = entry.date_in
+          %td
+            = entry.date_out
+          %td
+            = entry.quantity
+          %td
+            = entry.cost_price
+          %td
+            = entry.sale_price
+          %td
+            = entry.document_type

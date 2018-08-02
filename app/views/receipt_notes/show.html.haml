@@ -8,6 +8,10 @@
       %tr
         %td Item: #{income.item_name} | Qty: #{income.quantity} | Price: #{income.price}
 
-= button_to 'Posting', receipt_note_document_posting_index_path(@receipt_note),
+= button_to 'Posting', receipt_note_document_posting_path(@receipt_note),
   class: "btn #{document_button_class(@receipt_note)}"
+%p
+  = button_to 'Show entries',receipt_note_document_posting_path(@receipt_note), remote: true,
+      method: :get, class: "btn btn-info", data: { :toggle=>"collapse", :target=>"#collapseExample" }, aria: { :expanded=>"false", :controls=>"collapseExample" }
+  .collapse#collapseExample
 = link_to 'Back', receipt_notes_path

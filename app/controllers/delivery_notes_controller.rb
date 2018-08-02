@@ -23,6 +23,7 @@ class DeliveryNotesController < ApplicationController
   def show
     @delivery_note = DeliveryNote.find(params[:id])
     @outcomes = @delivery_note.outcomes
+    @goods_entries = []
   end
 
   private
