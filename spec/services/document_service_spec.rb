@@ -22,7 +22,7 @@ RSpec.describe DocumentService do
 
   before do
     [receipt_note_1, receipt_note_2].each do |i|
-      described_class.new(i).post
+      i.post
       i.reload
     end
   end
@@ -40,7 +40,7 @@ RSpec.describe DocumentService do
 
   it 'should delete old goods_entries when posting document' do
     income_1.update!(receipt_note: receipt_note_2)
-    described_class.new(receipt_note_1).post
+    receipt_note_1.post
     receipt_note_1.reload
     entries = receipt_note_1.goods_entries
 
@@ -49,7 +49,7 @@ RSpec.describe DocumentService do
 
   it 'should create proper goods_entries for delivery_note' do
     [delivery_note_1, receipt_note_3, delivery_note_2].each do |i|
-      described_class.new(i).post
+      i.post
       i.reload
     end
 

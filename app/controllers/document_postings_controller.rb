@@ -7,7 +7,7 @@ class DocumentPostingsController < ApplicationController
   ].freeze
 
   def create
-    DocumentService.new(@document).post
+    @document.post
     redirect_back fallback_location: root_path
   end
 
@@ -19,7 +19,7 @@ class DocumentPostingsController < ApplicationController
   end
 
   def destroy
-    DocumentService.new(@document).delete
+    @document.delete
     redirect_back fallback_location: root_path
   end
 

@@ -3,7 +3,7 @@ module ReportService
   Sale = Struct.new(:name, :quantity, :cost_price, :sale_price, :profit)
 
   class << self
-    def calculate_for(report_date = Time.now)
+    def items_in_store(report_date = Time.now)
       query = <<-SQL
         SELECT t.*
         FROM (SELECT item_id, date_in, cost_price, sum(quantity) quantity

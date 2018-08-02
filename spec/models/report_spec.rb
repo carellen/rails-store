@@ -23,12 +23,12 @@ RSpec.describe ReportService do
   let!(:outcome_5) { Outcome.create!(item: item_2, quantity: 1, price: 40.0, delivery_note: delivery_note_2)}
   before do
     [receipt_note, receipt_note_2, delivery_note].each do |i|
-        DocumentService.new(i).post
+        i.post
     end
   end
 
   it 'should calculate correct rest of items' do
-    items = described_class.calculate_for.map(&:to_a)
+    items = described_class.items_in_store.map(&:to_a)
     expect(items). to eq([
       [item_1.id, date_2, "12.0", 2],
       [item_2.id, date_1, "15.0", 1]
@@ -42,7 +42,7 @@ RSpec.describe ReportService do
       [item_2.id, 1, 15.0, 25.0, 10.0],
       [item_3.id, 3, 54.0, 84.0, 30.0]
      ])
-     DocumentService.new(delivery_note_2).post
+     delivery_note_2.post
      items = described_class.sold_items(date_1.utc, date_4.utc + 1.minute).map(&:to_a)
      expect(items). to eq([
        [item_1.id, 4, 44.0, 96.0, 52.0],
