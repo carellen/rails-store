@@ -1,5 +1,6 @@
 module ReportService
   Item = Struct.new(:name, :date, :cost_price, :quantity)
+  Sale = Struct.new(:name, :quantity, :cost_price, :sale_price, :profit)
 
   class << self
     def calculate_for(report_date = Time.now)
@@ -16,6 +17,27 @@ module ReportService
       SQL
       items = ActiveRecord::Base.connection.execute(query)
       items.map { |i| Item.new(i["item_id"], Time.zone.parse(i["date_in"]), i["cost_price"], i["quantity"]) }
+    end
+
+    def sold_items(date_start = Time.now, date_end = Time.now)
+      query = <<-SQL
+        SELECT item_id, abs(sum(quantity)) quantity, cost_price, sale_price
+        FROM goods_entries
+        WHERE document_type = 'DeliveryNote'
+        AND date_out BETWEEN '#{date_start}' AND '#{date_end}'
+        GROUP BY item_id, cost_price, sale_price
+        ORDER BY item_id
+      SQL
+      items = ActiveRecord::Base.connection.execute(query).to_a
+      items  = items.group_by { |i| i['item_id']}.map do |k, v|
+          Sale.new(k, *v.reduce(Hash.new(0)) { |h, el|
+            h[:quantity] += el['quantity']
+            h[:cost_price] += el['quantity']*BigDecimal(el['cost_price'])
+            h[:sale_price] += el['quantity']*BigDecimal(el['sale_price'])
+            h[:profit] += el['quantity']*BigDecimal(el['sale_price']) - el['quantity']*BigDecimal(el['cost_price'])
+            h
+          }.values)
+      end
     end
 
     def available_quantity_for(item_id)

@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   resources :receipt_notes, concerns: :postable, only: [:index, :new, :create, :show]
   resources :delivery_notes, concerns: :postable, only: [:index, :new, :create, :show]
   resource :report, only: :show
+  resource :sale_report, only: :show
 end

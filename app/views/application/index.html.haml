@@ -7,3 +7,5 @@ WELCOME TO STORE
   = link_to 'DELIVERIES', delivery_notes_path
 .report
   = link_to 'Items in store', report_path(params: { report: { date: Time.now }})
+  |
+  = link_to 'Sales', sale_report_path(params: { report: { date_start: Time.now, date_end: Time.now }})
