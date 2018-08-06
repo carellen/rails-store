@@ -1,32 +1,48 @@
 module DocumentService
-
-  def delete
+  def undo_posting
     goods_entries.delete_all
   end
 
   def post
-    delete
+    undo_posting
     return if table_rows.empty?
     date_in = date.iso8601(6)
     entries = table_rows.flat_map do |e|
         if instance_of?(ReceiptNote)
           "('#{date_in}',null,#{e.quantity},#{e.price},null,'#{self.class}',#{id},#{e.item_id},'now()','now()')"
         else
-          available_items(e.item_id).reduce([ e.quantity, [] ]) do |arr, item|
-            break arr unless arr[0] > 0
-            [
-              arr[0] - item["quantity"],
-              arr[1].push(
-                          "('#{item["date_in"]}',
-                            '#{date_in}',
-                             #{item['quantity'] < arr[0] ? -item["quantity"] : -arr[0]},
-                             #{item["cost_price"]},#{e.price},
-                             '#{self.class}',
-                             #{id},#{e.item_id},'now()','now()')"
-                           )
-            ]
-          end[1]
+          items_in_store = available_items(e.item_id)
+          remains_items = e.quantity
+          rows = []
+          index = 0
+          begin
+            curr_item = items_in_store[index]
+            rows.push(
+                      "('#{curr_item['date_in']}',
+                        '#{date_in}',
+                         #{curr_item['quantity'] < remains_items ? -curr_item['quantity'] : -remains_items},
+                         #{curr_item['cost_price']},#{e.price},
+                         '#{self.class}',
+                         #{id},#{e.item_id},'now()','now()')"
+                       )
+            index += 1
+          end while index < items_in_store.size && (remains_items -= curr_item['quantity']).positive?
+          rows
         end
+          # available_items(e.item_id).reduce([ e.quantity, [] ]) do |arr, item|
+          #   break arr unless arr[0] > 0
+          #   [
+          #     arr[0] - item['quantity'],
+          #     arr[1].push(
+          #                 "('#{item["date_in"]}',
+          #                   '#{date_in}',
+          #                    #{item['quantity'] < arr[0] ? -item["quantity"] : -arr[0]},
+          #                    #{item["cost_price"]},#{e.price},
+          #                    '#{self.class}',
+          #                    #{id},#{e.item_id},'now()','now()')"
+          #                  )
+          #   ]
+          # end[1]
     end
     query = <<-SQL
       INSERT INTO goods_entries

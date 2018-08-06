@@ -5,8 +5,8 @@ Rails.application.routes.draw do
   root 'application#index'
 
   resources :items, only: [:index, :new, :create]
-  resources :receipt_notes, concerns: :postable, only: [:index, :new, :create, :show, :edit, :update]
-  resources :delivery_notes, concerns: :postable, only: [:index, :new, :create, :show, :edit, :update]
+  resources :receipt_notes, concerns: :postable, except: :destroy
+  resources :delivery_notes, concerns: :postable, except: :destroy
   resource :report, only: :show
   resource :sale_report, only: :show
 end

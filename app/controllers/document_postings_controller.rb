@@ -19,7 +19,7 @@ class DocumentPostingsController < ApplicationController
   end
 
   def destroy
-    @document.delete
+    @document.undo_posting
     redirect_back fallback_location: root_path
   end
 

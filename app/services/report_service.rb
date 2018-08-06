@@ -7,16 +7,16 @@ module ReportService
       query = <<-SQL
         SELECT t.*
         FROM (SELECT item_id, date_in, cost_price, sum(quantity) quantity
-                          FROM goods_entries
-                          WHERE date_in <= '#{report_date}'
-													AND date_out <= '#{report_date}'
-													OR date_out IS NULL
-                          GROUP BY item_id, date_in, cost_price
-                          ORDER BY item_id, date_in) t
+              FROM goods_entries
+              WHERE date_in <= '#{report_date}'
+							AND date_out <= '#{report_date}'
+							OR date_out IS NULL
+              GROUP BY item_id, date_in, cost_price
+              ORDER BY item_id, date_in) t
         WHERE quantity > 0
       SQL
       items = ActiveRecord::Base.connection.execute(query)
-      items.map { |i| Item.new(i["item_id"], Time.zone.parse(i["date_in"]), i["cost_price"], i["quantity"]) }
+      items.map { |i| Item.new(i['item_id'], Time.zone.parse(i['date_in']), i['cost_price'], i['quantity']) }
     end
 
     def sold_items(date_start = Time.now, date_end = Time.now)
@@ -29,14 +29,14 @@ module ReportService
         ORDER BY item_id
       SQL
       items = ActiveRecord::Base.connection.execute(query).to_a
-      items  = items.group_by { |i| i['item_id']}.map do |k, v|
-          Sale.new(k, *v.reduce(Hash.new(0)) { |h, el|
+      items.group_by { |i| i['item_id']}.map do |k, v|
+          Sale.new(k, *v.reduce(Hash.new(0)) do |h, el|
             h[:quantity] += el['quantity']
             h[:cost_price] += el['quantity']*BigDecimal(el['cost_price'])
             h[:sale_price] += el['quantity']*BigDecimal(el['sale_price'])
             h[:profit] += el['quantity']*BigDecimal(el['sale_price']) - el['quantity']*BigDecimal(el['cost_price'])
             h
-          }.values)
+          end.values)
       end
     end
 
