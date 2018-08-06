@@ -1,7 +1,7 @@
 class ReceiptNote < ApplicationRecord
   include DocumentService
-  
-  has_many :goods_entries, as: :document
+
+  has_many :goods_entries, as: :document, dependent: :destroy
   has_many :incomes, inverse_of: :receipt_note
   accepts_nested_attributes_for :incomes, allow_destroy: true
 

@@ -16,6 +16,16 @@ class ReceiptNotesController < ApplicationController
   end
 
   def show; end
+
+  def edit; end
+
+  def update
+    if @receipt_note.update(receipt_note_params)
+      @receipt_note.undo_posting
+      redirect_to @receipt_note
+    else
+      redirect_back fallback_location: root_path
+    end
   end
 
   private
@@ -32,6 +42,6 @@ class ReceiptNotesController < ApplicationController
 
     def receipt_note_params
       params.require(:receipt_note).permit(:supplier, :date,
-        incomes_attributes: [:item_id, :quantity, :price, :_destroy])
+        incomes_attributes: [:item_id, :quantity, :price, :_destroy, :id])
     end
 end
