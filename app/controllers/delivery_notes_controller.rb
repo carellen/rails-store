@@ -1,15 +1,13 @@
 class DeliveryNotesController < ApplicationController
   include ReportService
   before_action :available_items, only: [:new, :create]
+  before_action :find_delivery_note, only: [:new, :show, :edit, :update]
 
   def index
     @delivery_notes = DeliveryNote.all
   end
 
-  def new
-    @delivery_note = DeliveryNote.new
-    @delivery_note.outcomes.build
-  end
+  def new; end
 
   def create
     @delivery_note = DeliveryNote.new(delivery_note_params)
@@ -21,12 +19,20 @@ class DeliveryNotesController < ApplicationController
   end
 
   def show
-    @delivery_note = DeliveryNote.find(params[:id])
-    @outcomes = @delivery_note.outcomes
     @goods_entries = []
   end
 
   private
+
+    def find_delivery_note
+      if params[:id]
+        @delivery_note = DeliveryNote.find(params[:id])
+        @outcomes = @delivery_note.outcomes
+      else
+        @delivery_note = DeliveryNote.new
+        @delivery_note.outcomes.build
+      end
+    end
 
     def delivery_note_params
       params.require(:delivery_note).permit(:customer, :date,
