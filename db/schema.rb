@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_01_143019) do
+ActiveRecord::Schema.define(version: 2018_07_30_072700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,13 +26,12 @@ ActiveRecord::Schema.define(version: 2018_08_01_143019) do
     t.datetime "date_in"
     t.datetime "date_out"
     t.integer "quantity"
-    t.decimal "cost_price"
+    t.decimal "price"
     t.string "document_type"
     t.bigint "document_id"
     t.bigint "item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.decimal "sale_price"
     t.index ["document_type", "document_id"], name: "index_goods_entries_on_document_type_and_document_id"
     t.index ["item_id"], name: "index_goods_entries_on_item_id"
   end

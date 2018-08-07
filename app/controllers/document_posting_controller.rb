@@ -1,4 +1,4 @@
-class DocumentPostingsController < ApplicationController
+class DocumentPostingController < ApplicationController
   before_action :find_document, except: :index
 
   DOCUMENTS = [
@@ -6,21 +6,21 @@ class DocumentPostingsController < ApplicationController
     DeliveryNote
   ].freeze
 
+  def index
+    @goods_entries = GoodsEntry.all
+  end
+
   def create
-    @document.post
+    DocumentService.new(@document).post
     redirect_back fallback_location: root_path
   end
 
   def show
     @goods_entries = @document.goods_entries
-    respond_to do |format|
-      format.js
-    end
   end
 
   def destroy
-    @document.undo_posting
-    redirect_back fallback_location: root_path
+    DocumentService.new(@document).delete
   end
 
   private
