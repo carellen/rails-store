@@ -21,8 +21,8 @@
         %td
           .row
             = button_to 'Show', delivery_note_path(note), method: :get, class: "btn btn-info"
-            = button_to 'Posting', delivery_note_document_posting_path(note), class: "btn #{document_button_class(note)}"
-            = button_to 'UNDO', delivery_note_document_posting_path(note), method: :delete, class: "btn btn-warning"
+            = button_to 'Posting', posting_delivery_note_path(note), class: "btn #{document_button_class(note)}"
+            = button_to 'UNDO', undo_delivery_note_path(note), class: "btn btn-warning"
 = link_to 'New delivery note', new_delivery_note_path
 |
 = link_to 'Back', root_path

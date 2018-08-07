@@ -12,8 +12,8 @@ class ReportsController < ApplicationController
     end
 
     def parse_date
-      report_params[:date] ? Time.parse(report_params[:date]) :
-      Time.new(report_params["date(1i)"].to_i, report_params["date(2i)"].to_i,
+      report_params[:date] ? DateTime.parse(report_params[:date]) :
+      DateTime.new(report_params["date(1i)"].to_i, report_params["date(2i)"].to_i,
                   report_params["date(3i)"].to_i, report_params["date(4i)"].to_i,
                   report_params["date(5i)"].to_i)
     end

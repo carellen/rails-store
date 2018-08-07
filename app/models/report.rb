@@ -3,8 +3,8 @@ class Report
 
   attr_accessor :date, :data
 
-  def initialize(date = Time.now)
+  def initialize(date = DateTime.now)
     @date = date
-    @data = ReportService.items_in_store(date)
+    @data = ReportService.calculate_for(date)
   end
 end
