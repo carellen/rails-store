@@ -1,6 +1,6 @@
 class DeliveryNote < ApplicationRecord
-  include DocumentService
-  
+  acts_as_postable
+
   has_many :goods_entries, as: :document, dependent: :destroy
   has_many :outcomes
   accepts_nested_attributes_for :outcomes, allow_destroy: true

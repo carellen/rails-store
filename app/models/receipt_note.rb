@@ -1,5 +1,5 @@
 class ReceiptNote < ApplicationRecord
-  include DocumentService
+  acts_as_postable
 
   has_many :goods_entries, as: :document, dependent: :destroy
   has_many :incomes, inverse_of: :receipt_note

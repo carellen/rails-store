@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe DocumentService do
+RSpec.describe Postable do
   let(:date_1) { Time.now - 2.hour }
   let(:date_2) { Time.now - 1.hour }
   let(:date_3) { Time.now - 30.minute }
