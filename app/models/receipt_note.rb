@@ -1,5 +1,7 @@
 class ReceiptNote < ApplicationRecord
-  has_many :goods_entries, as: :document
+  acts_as_postable
+
+  has_many :goods_entries, as: :document, dependent: :destroy
   has_many :incomes, inverse_of: :receipt_note
   accepts_nested_attributes_for :incomes, allow_destroy: true
 

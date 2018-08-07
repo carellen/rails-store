@@ -1,6 +1,7 @@
 .row
-  = simple_form_for @report, as: :report, method: :get, url: report_path do |f|
-    = f.input :date, as: :datetime
+  = simple_form_for @report, as: :report, method: :get, url: sale_report_path do |f|
+    = f.input :date_start, as: :datetime
+    = f.input :date_end, as: :datetime
     = f.submit 'Submit', class: 'btn btn-success btn-block'
 .row
   %table.table
@@ -9,20 +10,24 @@
         %th
           Item
         %th
-          Date in
+          Quantity
         %th
           Cost price
         %th
-          Quantity
+          Sale price
+        %th
+          Profit
     %tbody
       - @report.data.each do |item|
         %tr
           %td
             = item.name
           %td
-            = item.date
+            = item.quantity
           %td
             = item.cost_price
           %td
-            = item.quantity
+            = item.sale_price
+          %td
+            = item.profit
 = link_to 'Back', root_path

@@ -1,0 +1,19 @@
+= simple_form_for receipt_note do |f|
+  = f.input :date, default: Time.now
+  = f.input :supplier
+  .row.align-items-center
+    = f.simple_fields_for :incomes, dynamic: true do |i|
+      .col-6
+        = i.association :item
+      .col-1
+        = i.input :quantity
+      .col-sm
+        = i.input :price
+      .col-sm
+        = i.remove_fields_link 'Remove item', class: 'btn btn-danger'
+  = f.add_fields_link :incomes, '+', class: 'btn btn-success'
+  .row.justify-content-end
+    .col-4
+      = link_to '+ Add new item', new_item_path, class: 'btn btn-info'
+    .col-4
+      = f.button :submit
